@@ -34,7 +34,7 @@ public class makeUpdate {
         System.out.println("Downloaded the files in " + timeDuration / 1000L + " seconds");
     }
 
-    public void downloadClient() throws GitAPIException {
+    public void downloadClient() {
 
         // If the launcher fail you can remove the version.txt file and the files will be downloaded other time.
         Launcher.DIR.delete();
@@ -51,7 +51,13 @@ public class makeUpdate {
         }
     }
 
-    // Future function to pull (update the client).
+    // Download mods from mega.nz
+
+    /**
+     * Download mods from mega.nz
+     * The mods folder in github must be empty
+     * Check if can download folder files to the mods folder %appdata%\.lapaman\mods
+     */
     public void updateClient() {
 
     }
@@ -59,8 +65,8 @@ public class makeUpdate {
     private void printInfo() {
         // Logs
         System.out.println("Updater 1.0 by Goedix");
-        System.out.printf("Current time is %s\n", new Object[]{(new Date(System.currentTimeMillis())).toString()});
+        System.out.printf("Current time is %s\n", (new Date(System.currentTimeMillis())));
         System.out.println("Starting updating...");
-        System.out.printf("    Output Dir: %s\n", new Object[]{this.updater.getOutputFolder().getAbsolutePath()});
+        System.out.printf("    Output Dir: %s\n", this.updater.getOutputFolder().getAbsolutePath());
     }
 }

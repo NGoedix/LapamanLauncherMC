@@ -4,10 +4,23 @@ import fr.theshark34.swinger.Swinger;
 import fr.theshark34.swinger.animation.Animator;
 import fr.theshark34.swinger.util.WindowMover;
 import discord.DiscordManager;
+import mega.MegaHandler;
+import org.eclipse.jgit.api.*;
+import org.eclipse.jgit.api.errors.GitAPIException;
+import org.eclipse.jgit.lib.ObjectId;
+import org.eclipse.jgit.transport.FetchResult;
 
+import javax.crypto.BadPaddingException;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.IOException;
+import java.security.InvalidAlgorithmParameterException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 
 public class Main extends JFrame implements ActionListener {
 
@@ -60,6 +73,7 @@ public class Main extends JFrame implements ActionListener {
     }
 
     public void execute() {
+        // TODO - Check functionality
         if(Launcher.p != null) {
             if(!Launcher.p.isAlive()) System.exit(0);
         }

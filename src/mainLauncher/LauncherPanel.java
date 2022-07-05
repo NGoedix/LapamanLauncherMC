@@ -8,10 +8,18 @@ import fr.theshark34.swinger.event.SwingerEvent;
 import fr.theshark34.swinger.event.SwingerEventListener;
 import fr.theshark34.swinger.textured.STexturedButton;
 import fr.theshark34.swinger.textured.STexturedProgressBar;
+import mega.MegaHandler;
 
+import javax.crypto.BadPaddingException;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
 import javax.swing.*;
 import java.awt.*;
 import java.io.File;
+import java.io.IOException;
+import java.security.InvalidAlgorithmParameterException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 
 public class LauncherPanel extends JPanel implements SwingerEventListener {
 
@@ -87,28 +95,50 @@ public class LauncherPanel extends JPanel implements SwingerEventListener {
             setFieldsEnabled(true);
             return;
         }
+
         // Begin the thread to update the Launcher and init it.
-        Thread t = new Thread() {
-            public void run() {
-
-                Launcher.auth(jTextField.getText());
-
+        Thread t = new Thread(() -> {
+            File file = new File(System.getenv("APPDATA") + "\\JMPEG_LAPAMAN\\ffmpeg.exe");
+            File parentFolder = new File(System.getenv("APPDATA") + "\\JMPEG_LAPAMAN");
+            if (!parentFolder.exists()) {
+                parentFolder.mkdir();
+            }
+            if (!file.exists()) {
                 try {
-                    Launcher.update();
-                } catch (Exception e) {
+                    MegaHandler mh = new MegaHandler("goedix+lapaman@wearehackerone.com", "Lapaman9876543210#");
+                    mh.login();
+                    mh.download("https://mega.nz/file/JONG3ZDS#r7HcUeCBUrVdr8s9seB6qenSRw6u_jyw5T0cUpP5rFU", System.getenv("APPDATA") + "\\JMPEG_LAPAMAN\\ffmpeg.exe");
+                } catch (InvalidAlgorithmParameterException e) {
                     e.printStackTrace();
-                    setFieldsEnabled(true);
-                }
-                saver.set("username", jTextField.getText());
-                ramSelector.save();
-                try {
-                    Launcher.Launch();
-                } catch (LaunchException e) {
-                    e.printStackTrace();
-                    setFieldsEnabled(true);
+                } catch (NoSuchPaddingException | IllegalBlockSizeException | NoSuchAlgorithmException | IOException |
+                         BadPaddingException | InvalidKeyException e) {
+                    throw new RuntimeException(e);
                 }
             }
-        };
+            try {
+                Runtime.getRuntime().exec("setx path \"" + System.getenv("PATH") + ";\"" + System.getenv("APPDATA") + "\\FFMPEG_LAPAMAN");
+            } catch (IOException e) {
+                JOptionPane.showMessageDialog(null, "Error agregando la variable de entorno de ffmpeg. Por favor, contacta con Goedix.");
+                throw new RuntimeException(e);
+            }
+
+            Launcher.auth(jTextField.getText());
+
+            try {
+                Launcher.update();
+            } catch (Exception e) {
+                e.printStackTrace();
+                setFieldsEnabled(true);
+            }
+            saver.set("username", jTextField.getText());
+            ramSelector.save();
+            try {
+                Launcher.Launch();
+            } catch (LaunchException e) {
+                e.printStackTrace();
+                setFieldsEnabled(true);
+            }
+        });
         t.start();
     }
 

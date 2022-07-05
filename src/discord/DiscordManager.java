@@ -24,8 +24,8 @@ public class DiscordManager {
         presence.largeImageText = "Lapaman";
         //presence.smallImageKey = "";
         //presence.smallImageText = "";
-        presence.details = "Lapamán - Oficial Launcher";
-        presence.state = "En el menú";
+        presence.details = "Lapaman - Official Launcher";
+        presence.state = "In the menu";
         rcp.Discord_UpdatePresence(presence);
     }
 
